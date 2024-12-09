@@ -11,8 +11,7 @@ def main():
             case 1:
                   #---------Registar Jogador-------------------
                     nome = input ('Nome do jogador:\n-->')
-                    cor = input('Escolha a cor da sua peça:\n-->')
-                    verifica = registar_jogador(jogadores, nome, cor)
+                    verifica = registar_jogador(jogadores, nome)
                     if verifica == False:
                          print('Nome de jogador ja existente')
                     else:
@@ -37,7 +36,7 @@ def main():
             case 3:
                   #---------Pontuações-------
                for j in jogadores:
-                    print(f"Jogador: {j["Nome"]}, pontuação: {j["Pontuação"]}, cor: {j["Cor"]}")
+                    print(f"Jogador: {j["Nome"]}, pontuação: {j["Pontuação"]}")
 
             case 4:
                   #---------Sair----------

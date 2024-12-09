@@ -7,11 +7,11 @@ def verificar_jogador(matriz,nome):
     return False        
    
    
-def registar_jogador(matriz,nome,cor):
+def registar_jogador(matriz,nome):
     if verificar_jogador(matriz,nome) == True:
           return False
     else:     
-     j = {"Nome": nome, "Pontuação": 0, "Cor": cor}
+     j = {"Nome": nome.lower(), "Pontuação": 0}
      matriz.append(j)
      return True
     
