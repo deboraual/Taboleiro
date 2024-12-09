@@ -15,5 +15,15 @@ def registar_jogador(matriz,nome):
      matriz.append(j)
      return True
     
-def ver_pontuacoes ():
-    pass
+    #-----Função professora tabuleiro com listas 
+
+def criar_tabuleiro_listas(linhas, colunas):
+    tabuleiro = []
+    for i in range(linhas): 
+        linha = []
+        for j in range(colunas):  
+            linha.append("X")  
+        tabuleiro.append(linha)  
+    return tabuleiro
+
+#cores para os jogadores: azul, vermelho, amarelo e verde

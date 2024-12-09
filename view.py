@@ -28,8 +28,17 @@ def main():
                     if verificar_nome == False:
                          print("O utilizador não existe!") 
                          break    
-
                     n+=1
+                    if n == players:
+                         print('\tAVISO: O tabuleiro tem de ter entre 5-15 linhas e 5-15 colunas\n')
+                         linhas = int(input('Digite o numero de linhas que deseja que o seu tabuleiro tenha:\n-->'))
+                         colunas = int(input('Digite o numero de colunas que quer que o seu tabuleiro tenha:\n-->'))
+                         if linhas >=5 and linhas <=15 and colunas >= 5 and colunas <= 15:
+                             tabuleiro = criar_tabuleiro_listas (linhas, colunas)
+                             for linha in tabuleiro:
+                                  print ("\t"+" ".join(linha))
+                         else:
+                              print ('ERRO: Tamanho de tabuleiro inválido')
 
                     #------------------------------------------------------------------------------------ 
 
