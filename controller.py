@@ -15,7 +15,8 @@ def registar_jogador(matriz,nome):
      matriz.append(j)
      return True
     
-    #-----Função professora tabuleiro com listas 
+
+#-----Função professora tabuleiro com listas 
 
 def criar_tabuleiro_listas(linhas, colunas):
     tabuleiro = []
@@ -25,5 +26,25 @@ def criar_tabuleiro_listas(linhas, colunas):
             linha.append("X")  
         tabuleiro.append(linha)  
     return tabuleiro
+
+#------Função para devolver o tabuleiro com a linha e coluna do utilizador 
+def devolver_tabuleiro ( colunas, tabuleiro):
+
+     colunas_numeros ="  " + "".join(f"{i+1:>2}" for i in range(colunas))
+     print(colunas_numeros)
+
+     for idx, linha in enumerate(tabuleiro):
+         print(f"{idx + 1:<3}" + " ".join(linha))
+    
+
+
+
+
+
+
+
+
+
+
 
 #cores para os jogadores: azul, vermelho, amarelo e verde
