@@ -1,3 +1,4 @@
+from colorama import Back, Style
 
 def verificar_jogador(matriz,nome):
     
@@ -36,7 +37,23 @@ def devolver_tabuleiro ( colunas, tabuleiro):
      for idx, linha in enumerate(tabuleiro):
          print(f"{idx + 1:<3}" + " ".join(linha))
 
+def tabuleiro_colorido (colunas, tabuleiro, cores_jogadores):
+     
+     colunas_numeros = "  " + "".join(f"{i + 1:>2}" for i in range(colunas))
+     print(colunas_numeros)
 
+     for idx, linha in enumerate(tabuleiro):
+         linha_formatada = []
+         for cell in linha:
+            if cell != "X":
+                jogador_index = int(cell)-1
+                cor = cores_jogadores[jogador_index]
+                linha_formatada.append(cor + cell + Style.RESET_ALL)
+
+            else:
+                linha_formatada.append(cell)
+         print(f"{idx + 1:<3}" + " ".join(linha_formatada))
+                 
 
 
 

@@ -26,6 +26,7 @@ def main():
                       break
                  
                  jogadores_atuais = []
+                 cores_jogadores =  [Back.BLUE, Back.RED, Back.YELLOW, Back.GREEN]
                  n = 0   
                  while n < players:
                     nome = input("Qual o nome do jogador: ")
@@ -65,7 +66,7 @@ def main():
                               #atualizar tabuleiro
                               tabuleiro[ln][cl] = str(jogador_atual+1)
                               print('Tabuleiro atualizado:')
-                              devolver_tabuleiro(colunas,tabuleiro)
+                              tabuleiro_colorido(colunas,tabuleiro,cores_jogadores)
 
                               jogadas_realizadas += 1
                               jogador_atual = (jogador_atual + 1) % players
