@@ -50,11 +50,16 @@ def main():
                       print('Tabuleiro inicial:')
                       devolver_tabuleiro(colunas,tabuleiro)
 
-                      #------------Jogadas-------------- 
-                      total_jogadas = linhas * colunas 
-                      jogadas_realizadas = 0
-                      jogador_atual = 0 
+                      #-----------Primeira jogada (1,1)----------
+                      print(f'A primeira jogada tem de ser na posição (1,1) que calha a vez do/a jogador/a {jogadores_atuais[0]}')
+                      tabuleiro[0][0] = '1'
+                      print('Tabuleiro atualizado com a primeira jogada:')
+                      tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
 
+                      #--------Jogar---------
+                      total_jogadas = linhas * colunas - 1
+                      jogadas_realizadas = 0
+                      jogador_atual = 1
                       while jogadas_realizadas < total_jogadas:
                           print(f'É a vez do jogador {jogadores_atuais[jogador_atual]}')
                           ln = int(input('Digite o número da linha:\n-->'))
@@ -63,7 +68,7 @@ def main():
                           cl = cl-1
 
                           if 0 <= ln < linhas and 0 <= cl < colunas and  tabuleiro[ln][cl]== 'X':
-                              #atualizar tabuleiro
+                              #-----Atualizar tabuleiro---------
                               tabuleiro[ln][cl] = str(jogador_atual+1)
                               print('Tabuleiro atualizado:')
                               tabuleiro_colorido(colunas,tabuleiro,cores_jogadores)
