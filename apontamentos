@@ -7,7 +7,6 @@
 #-> Os jogadores nao podem ter o mesmo nome logo fazer funcao para verificar se o jogador existe 
 #-> Criar uma função para ver os dados e pontos dos jogadores
 
-
  #join constroi uma string com o nunmero das colunas alinhando a direita a partir de f"{i+1:>2}", 
  #i+1: Os números começam de 1 (as colunas são numeradas a partir de 1), 
  #:>2: Garante que cada número ocupe pelo menos 2 caracteres e esteja alinhado à direita,

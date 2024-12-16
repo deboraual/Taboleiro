@@ -1,4 +1,5 @@
 from controller import *
+from colorama import  Back, Style
 
 def main():
     jogadores = []
@@ -20,43 +21,57 @@ def main():
             case 2:
                   #--------Verificar o número de jogadores antes de jogar-------- 
                  players = int(input('Quantos jogadores vão jogar, escolha entre 2 a 4\n-->'))
-
+                 if players < 2 or players > 4:
+                      print('O minimo de jogadores são 2 e o maximo são 4.')
+                      break
+                 
+                 jogadores_atuais = []
                  n = 0   
                  while n < players:
                     nome = input("Qual o nome do jogador: ")
                     verificar_nome = verificar_jogador(jogadores,nome)
                     if verificar_nome == False:
                          print("O utilizador não existe!") 
-                         break    
+                         break 
+                    else:
+                        jogadores_atuais.append(nome)   
                     n+=1
                     if n == players:
-                         print('\tAVISO: O tabuleiro tem de ter entre 5-15 linhas e 5-15 colunas\n')
-                         linhas = int(input('Digite o numero de linhas que deseja que o seu tabuleiro tenha:\n-->'))
-                         colunas = int(input('Digite o numero de colunas que quer que o seu tabuleiro tenha:\n-->'))
-                         if linhas >=5 and colunas >= 5 and linhas <= 15 and colunas <=15 :
-                             tabuleiro = criar_tabuleiro_listas (linhas, colunas)
+                      print('\tAVISO: O tabuleiro tem de ter entre 5-15 linhas e 5-15 colunas\n')
+                      linhas = int(input('Digite o numero de linhas que deseja que o seu tabuleiro tenha:\n-->'))
+                      colunas = int(input('Digite o numero de colunas que quer que o seu tabuleiro tenha:\n-->'))
 
-                             colunas_numeros ="  "+ "".join(f"{i+1:>2}" for i in range(colunas))
-                             print(colunas_numeros)
+                      if linhas < 5 or linhas > 15 or colunas < 5 or colunas > 15:
+                           print('Erro, tamanho de tabuleiro invalido!!')
+                           break
+                      tabuleiro = criar_tabuleiro_listas(linhas,colunas)
+                      #--------Taboleiro inicial--------
+                      print('Tabuleiro inicial:')
+                      devolver_tabuleiro(colunas,tabuleiro)
 
-                             for idx, linha in enumerate(tabuleiro):
-                                print(f"{idx + 1:<3}" + " ".join(linha))  # Número da linha alinhado à esquerda
+                      #------------Jogadas-------------- 
+                      total_jogadas = linhas * colunas 
+                      jogadas_realizadas = 0
+                      jogador_atual = 0 
 
-                              #------------COMECAR O JOGO EM SI --------
-                             print ('Para jogar comece por indicar a linha e de seguida as colunas')
-                             
-                             ln = int(input('Indique o numero da linha\n-->'))
-                             cl = int(input('Indique o numero da coluna\n-->')) 
+                      while jogadas_realizadas < total_jogadas:
+                          print(f'É a vez do jogador {jogadores_atuais[jogador_atual]}')
+                          ln = int(input('Digite o número da linha:\n-->'))
+                          cl = int(input('Digite o número da coluna:\n-->'))
+                          ln = ln-1
+                          cl = cl-1
 
-                             ln = ln-1
-                             cl = cl-1
-                             if 0 <= ln < linhas and 0 <= cl < colunas:
-                                  tabuleiro[ln][cl] = 'A'
-                                  print('Tabuleiro atualizado:')
-                                  devolver_tabuleiro(colunas, tabuleiro)
+                          if 0 <= ln < linhas and 0 <= cl < colunas and  tabuleiro[ln][cl]== 'X':
+                              #atualizar tabuleiro
+                              tabuleiro[ln][cl] = str(jogador_atual+1)
+                              print('Tabuleiro atualizado:')
+                              devolver_tabuleiro(colunas,tabuleiro)
 
-                         else:
-                              print ('ERRO: Tamanho de tabuleiro inválido')
+                              jogadas_realizadas += 1
+                              jogador_atual = (jogador_atual + 1) % players
+                          else:
+                              print('Jogada invalida, tente novamente')
+                        
 
                     #------------------------------------------------------------------------------------ 
 

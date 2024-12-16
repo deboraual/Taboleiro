@@ -35,7 +35,7 @@ def devolver_tabuleiro ( colunas, tabuleiro):
 
      for idx, linha in enumerate(tabuleiro):
          print(f"{idx + 1:<3}" + " ".join(linha))
-    
+
 
 
 
