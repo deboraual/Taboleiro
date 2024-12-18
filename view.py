@@ -23,7 +23,7 @@ def main():
                  players = int(input('Quantos jogadores vão jogar, escolha entre 2 a 4\n-->'))
                  if players < 2 or players > 4:
                       print('O minimo de jogadores são 2 e o maximo são 4.')
-                      break
+                      exit()
                  
                  jogadores_atuais = []
                  cores_jogadores =  [Back.BLUE, Back.RED, Back.YELLOW, Back.GREEN] #defenir as cores que vao ser utilizadas
@@ -49,17 +49,18 @@ def main():
                            print('Erro, tamanho de tabuleiro invalido!!')
                            break
                       
-                      tabuleiro = criar_tabuleiro_listas(linhas,colunas)
+                      tabuleiro = criar_tabuleiro_listas(linhas, colunas)
           
                       #--------Taboleiro inicial--------
                       print('Tabuleiro inicial:')
-                      devolver_tabuleiro(colunas,tabuleiro)
+                      devolver_tabuleiro(colunas, tabuleiro)
 
                       #-----------Primeira jogada (1,1)----------
                       print(f'A primeira jogada tem de ser na posição (1,1) que calha a vez do/a jogador/a {jogadores_atuais[0]}')
                       tabuleiro[0][0] = '1'
-                      ultimas_posicoes = [None]*players
-                      ultimas_posicoes[0] = (0,0)
+
+                      historico_jogadas = [[]for _ in range(players)] #lista de listas para armazenar todas as jogadas de cada jogador
+                      historico_jogadas[0].append((0,0))
                       tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
 
 
@@ -76,24 +77,38 @@ def main():
                           ln = ln_input - 1
                           cl = cl_input - 1
                           
+                          #verificar se a posição esta dentro dos limites do tabuleiro
                           if ln < 0 or ln >= linhas or cl < 0 or cl >= colunas:
                               print('Posicao fora dos limites do tabuleiro')
                               continue 
+                          
+                          #verificra se a posicao nao tem X, caso nao tenha a posicao eesta ocupada
                           if tabuleiro [ln][cl] != 'X':
                               print('Posição ocupada')
-                              continue  
-
-                          if ultimas_posicoes[jogador_atual] is not None:
-                              ultima_linha, ultima_coluna = ultimas_posicoes[jogador_atual]    
-                              if abs(ln - ultima_linha) > 1 or abs(cl - ultima_coluna) > 1:
-                                  print('Posição invalida')
-                                  continue 
-                              
+                              continue 
+                           
+                          #ver adjacencia tendo em conta as jogadas anteriores feitas
+                          if not historico_jogadas[jogador_atual]:
+                              posicao_valida = True #se o jogador ainda nao tiver jogado qualquer jogada é possivel 
+                          else:
+                              posicao_valida = False
+                              for jogada_ant in historico_jogadas[jogador_atual]:
+                                  ultima_linha,ultima_coluna = jogada_ant
+                                  if abs(ln-ultima_linha) <= 1 and abs(cl - ultima_coluna) <= 1:
+                                      posicao_valida = True
+                                      break
+                                  
+                          if not posicao_valida:
+                              print('posicao invalida, não adjacente a nenhuma jogada anterior')
+                              continue
+                          #Arualizar o tabuleiro com a jogada atual
                           tabuleiro[ln][cl] = str(jogador_atual + 1)
                           print('Tabuleiro atualizado: ')
                           tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
 
-                          ultimas_posicoes[jogador_atual]=(ln,cl)
+                          # Adicionar a jogada ao historico do jogador            
+                          historico_jogadas[jogador_atual].append((ln,cl))
+
                           jogadas_realizadas += 1
                           jogador_atual = (jogador_atual + 1) % players
        
