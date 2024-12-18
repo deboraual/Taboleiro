@@ -26,7 +26,8 @@ def main():
                       break
                  
                  jogadores_atuais = []
-                 cores_jogadores =  [Back.BLUE, Back.RED, Back.YELLOW, Back.GREEN]
+                 cores_jogadores =  [Back.BLUE, Back.RED, Back.YELLOW, Back.GREEN] #defenir as cores que vao ser utilizadas
+
                  n = 0   
                  while n < players:
                     nome = input("Qual o nome do jogador: ")
@@ -35,17 +36,21 @@ def main():
                          print("O utilizador não existe!") 
                          break 
                     else:
-                        jogadores_atuais.append(nome)   
+                        jogadores_atuais.append(nome)   # vai adicionar os nomes a lista jogadores atuais
+
                     n+=1
                     if n == players:
                       print('\tAVISO: O tabuleiro tem de ter entre 5-15 linhas e 5-15 colunas\n')
                       linhas = int(input('Digite o numero de linhas que deseja que o seu tabuleiro tenha:\n-->'))
                       colunas = int(input('Digite o numero de colunas que quer que o seu tabuleiro tenha:\n-->'))
 
+                      #definir os limites do tabuleiro nao pode ser menor que 5 por 5 nem maior que 15 por 15   
                       if linhas < 5 or linhas > 15 or colunas < 5 or colunas > 15:
                            print('Erro, tamanho de tabuleiro invalido!!')
                            break
+                      
                       tabuleiro = criar_tabuleiro_listas(linhas,colunas)
+          
                       #--------Taboleiro inicial--------
                       print('Tabuleiro inicial:')
                       devolver_tabuleiro(colunas,tabuleiro)
@@ -53,31 +58,45 @@ def main():
                       #-----------Primeira jogada (1,1)----------
                       print(f'A primeira jogada tem de ser na posição (1,1) que calha a vez do/a jogador/a {jogadores_atuais[0]}')
                       tabuleiro[0][0] = '1'
-                      print('Tabuleiro atualizado com a primeira jogada:')
+                      ultimas_posicoes = [None]*players
+                      ultimas_posicoes[0] = (0,0)
                       tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
+
 
                       #--------Jogar---------
                       total_jogadas = linhas * colunas - 1
                       jogadas_realizadas = 0
                       jogador_atual = 1
+
                       while jogadas_realizadas < total_jogadas:
                           print(f'É a vez do jogador {jogadores_atuais[jogador_atual]}')
-                          ln = int(input('Digite o número da linha:\n-->'))
-                          cl = int(input('Digite o número da coluna:\n-->'))
-                          ln = ln-1
-                          cl = cl-1
+                          ln_input = int(input('Digite o número da linha:\n-->'))
+                          cl_input = int(input('Digite o número da coluna:\n-->'))
+                          
+                          ln = ln_input - 1
+                          cl = cl_input - 1
+                          
+                          if ln < 0 or ln >= linhas or cl < 0 or cl >= colunas:
+                              print('Posicao fora dos limites do tabuleiro')
+                              continue 
+                          if tabuleiro [ln][cl] != 'X':
+                              print('Posição ocupada')
+                              continue  
 
-                          if 0 <= ln < linhas and 0 <= cl < colunas and  tabuleiro[ln][cl]== 'X':
-                              #-----Atualizar tabuleiro---------
-                              tabuleiro[ln][cl] = str(jogador_atual+1)
-                              print('Tabuleiro atualizado:')
-                              tabuleiro_colorido(colunas,tabuleiro,cores_jogadores)
+                          if ultimas_posicoes[jogador_atual] is not None:
+                              ultima_linha, ultima_coluna = ultimas_posicoes[jogador_atual]    
+                              if abs(ln - ultima_linha) > 1 or abs(cl - ultima_coluna) > 1:
+                                  print('Posição invalida')
+                                  continue 
+                              
+                          tabuleiro[ln][cl] = str(jogador_atual + 1)
+                          print('Tabuleiro atualizado: ')
+                          tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
 
-                              jogadas_realizadas += 1
-                              jogador_atual = (jogador_atual + 1) % players
-                          else:
-                              print('Jogada invalida, tente novamente')
-                        
+                          ultimas_posicoes[jogador_atual]=(ln,cl)
+                          jogadas_realizadas += 1
+                          jogador_atual = (jogador_atual + 1) % players
+       
 
                     #------------------------------------------------------------------------------------ 
 
