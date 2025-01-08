@@ -36,7 +36,7 @@ def main():
                          print("O utilizador não existe!") 
                          break 
                     else:
-                        jogadores_atuais.append(nome)   # vai adicionar os nomes a lista jogadores atuais
+                        jogadores_atuais.append({"nome": nome, "pecas": 21})   # vai adicionar os nomes ao dicionario jogadores atuais e das peças iniciais 
 
                     n+=1
                     if n == players:
@@ -54,25 +54,27 @@ def main():
                       #--------Taboleiro inicial--------
                       print('Tabuleiro inicial:')
                       devolver_tabuleiro(colunas, tabuleiro)
-
-                      #-----------Primeira jogada (1,1)----------
+                      
+                       #-----------Primeira jogada (1,1)----------
                       print(f'A primeira jogada tem de ser na posição (1,1) que calha a vez do/a jogador/a {jogadores_atuais[0]}')
                       tabuleiro[0][0] = '1'
 
                       historico_jogadas = [[]for _ in range(players)] #lista de listas para armazenar todas as jogadas de cada jogador
                       historico_jogadas[0].append((0,0))
                       tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
+                      jogador_atual = 0 
 
 
-                      #--------Jogar---------
+                      #-----------Jogar----------
                       total_jogadas = linhas * colunas - 1
                       jogadas_realizadas = 0
                       jogador_atual = 1
 
                       while jogadas_realizadas < total_jogadas:
-                          print(f'É a vez do jogador {jogadores_atuais[jogador_atual]}')
+                          print(f'É a vez do jogador {jogadores_atuais[jogador_atual]["nome"]}, Peças: {jogadores_atuais[jogador_atual]["pecas"]}')
                           ln_input = int(input('Digite o número da linha:\n-->'))
                           cl_input = int(input('Digite o número da coluna:\n-->'))
+
                           
                           ln = ln_input - 1
                           cl = cl_input - 1
@@ -82,7 +84,7 @@ def main():
                               print('Posicao fora dos limites do tabuleiro')
                               continue 
                           
-                          #verificra se a posicao nao tem X, caso nao tenha a posicao eesta ocupada
+                          #verifica se a posicao nao tem X, caso nao tenha a posicao eesta ocupada
                           if tabuleiro [ln][cl] != 'X':
                               print('Posição ocupada')
                               continue 
@@ -101,7 +103,7 @@ def main():
                           if not posicao_valida:
                               print('posicao invalida, não adjacente a nenhuma jogada anterior')
                               continue
-                          #Arualizar o tabuleiro com a jogada atual
+                          #Atualizar o tabuleiro com a jogada atual
                           tabuleiro[ln][cl] = str(jogador_atual + 1)
                           print('Tabuleiro atualizado: ')
                           tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
@@ -111,7 +113,12 @@ def main():
 
                           jogadas_realizadas += 1
                           jogador_atual = (jogador_atual + 1) % players
-       
+
+                          jogadores_atuais[jogador_atual]["pecas"] -= 1
+
+                          if jogadores_atuais[jogador_atual]["pecas"] <= 0:
+                              print(f"")
+
 
                     #------------------------------------------------------------------------------------ 
 
