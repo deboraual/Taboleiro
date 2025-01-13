@@ -40,12 +40,12 @@ def main():
 
                     n+=1
                     if n == players:
-                      print('\tAVISO: O tabuleiro tem de ter entre 5-15 linhas e 5-15 colunas\n')
+                      print('\tAVISO: O tabuleiro tem de ter entre 5-30 linhas e 5-302 colunas\n')
                       linhas = int(input('Digite o numero de linhas que deseja que o seu tabuleiro tenha:\n-->'))
                       colunas = int(input('Digite o numero de colunas que quer que o seu tabuleiro tenha:\n-->'))
 
                       #definir os limites do tabuleiro nao pode ser menor que 5 por 5 nem maior que 15 por 15   
-                      if linhas < 5 or linhas > 15 or colunas < 5 or colunas > 15:
+                      if linhas < 5 or linhas > 30 or colunas < 5 or colunas > 30:
                            print('Erro, tamanho de tabuleiro invalido!!')
                            break
                       
