@@ -49,6 +49,7 @@ def main():
                            print('Erro, tamanho de tabuleiro invalido!!')
                            break
                       
+
                       tabuleiro = criar_tabuleiro_listas(linhas, colunas)
           
                       #--------Taboleiro inicial--------
@@ -69,7 +70,8 @@ def main():
                       tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
                       jogador_atual = 0 
 
-
+                      jogadores_atuais[jogador_atual]["pecas"] -= 1
+                      
                       #-----------Jogar----------
                       total_jogadas = linhas * colunas - 1
                       jogadas_realizadas = 0
