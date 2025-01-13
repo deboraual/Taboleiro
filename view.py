@@ -59,6 +59,11 @@ def main():
                       print(f'A primeira jogada tem de ser na posição (1,1) que calha a vez do/a jogador/a {jogadores_atuais[0]}')
                       tabuleiro[0][0] = '1'
 
+                      for jogador in jogadores:
+                          if jogador ["Nome"] == jogadores_atuais[0]["nome"]:
+                              jogador["Pontuação"]+= 1
+                              break
+
                       historico_jogadas = [[]for _ in range(players)] #lista de listas para armazenar todas as jogadas de cada jogador
                       historico_jogadas[0].append((0,0))
                       tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
@@ -103,21 +108,31 @@ def main():
                           if not posicao_valida:
                               print('posicao invalida, não adjacente a nenhuma jogada anterior')
                               continue
+                          
                           #Atualizar o tabuleiro com a jogada atual
                           tabuleiro[ln][cl] = str(jogador_atual + 1)
                           print('Tabuleiro atualizado: ')
                           tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
 
+
+                          #pontuacao
+                          for jogador in jogadores:
+                              if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
+                                  jogador["Pontuação"] += 1
+                                  break
+                              
                           # Adicionar a jogada ao historico do jogador            
                           historico_jogadas[jogador_atual].append((ln,cl))
+
+                          jogadores_atuais[jogador_atual]["pecas"] -= 1
 
                           jogadas_realizadas += 1
                           jogador_atual = (jogador_atual + 1) % players
 
-                          jogadores_atuais[jogador_atual]["pecas"] -= 1
+
 
                           if jogadores_atuais[jogador_atual]["pecas"] <= 0:
-                              print(f"")
+                              print(f"O jogador {jogadores_atuais[jogador_atual]['nome']} ficou sem peças.")
 
 
                     #------------------------------------------------------------------------------------ 
