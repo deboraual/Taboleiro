@@ -78,6 +78,17 @@ def main():
                       jogador_atual = 1
 
                       while jogadas_realizadas < total_jogadas:
+                          #verificar se ainda tem jogadas validas 
+                          if not jogadas_validas(tabuleiro, historico_jogadas,jogador_atual,linhas,colunas):
+                              print(f"Jogador {jogadores_atuais[jogador_atual]['nome']} não pode mais jogar e será eliminado.")
+                              if players == 2:
+                                vencedores, pontuacao = deterinar_vencedor(jogadores)
+                                print(f"O jogador {vencedores} ganhou e com {pontuacao} pontos")
+                              jogador_atual = (jogador_atual + 1) % players
+                              break
+                          
+
+
                           print(f'É a vez do jogador {jogadores_atuais[jogador_atual]["nome"]}, Peças: {jogadores_atuais[jogador_atual]["pecas"]}')
                           ln_input = int(input('Digite o número da linha:\n-->'))
                           cl_input = int(input('Digite o número da coluna:\n-->'))
@@ -97,18 +108,8 @@ def main():
                               continue 
                            
                           #ver adjacencia tendo em conta as jogadas anteriores feitas
-                          if not historico_jogadas[jogador_atual]:
-                              posicao_valida = True #se o jogador ainda nao tiver jogado qualquer jogada é possivel 
-                          else:
-                              posicao_valida = False
-                              for jogada_ant in historico_jogadas[jogador_atual]:
-                                  ultima_linha,ultima_coluna = jogada_ant
-                                  if abs(ln-ultima_linha) <= 1 and abs(cl - ultima_coluna) <= 1:
-                                      posicao_valida = True
-                                      break
-                                  
-                          if not posicao_valida:
-                              print('posicao invalida, não adjacente a nenhuma jogada anterior')
+                          if not verificar_movimentos(tabuleiro, ln, cl, historico_jogadas,jogador_atual):
+                              print('Posição invalida, nao adjacente a nenhuma jogada anterior')
                               continue
                           
                           #Atualizar o tabuleiro com a jogada atual
@@ -135,6 +136,21 @@ def main():
 
                           if jogadores_atuais[jogador_atual]["pecas"] <= 0:
                               print(f"O jogador {jogadores_atuais[jogador_atual]['nome']} ficou sem peças.")
+
+                          jogadores_restantes = [j for j in jogadores_atuais if j["pecas"]>0]
+                          if len(jogadores_restantes) <= 1:
+                              print ('nenhum jogador pode jogar mais, o jogo acabou')
+                              vencedores, pontuacao = deterinar_vencedor(jogadores)
+                              if len(vencedores) == 1:
+                                  print(f"O vecedor é {vencedores[0]} com {pontuacao} pontos!")
+                                  
+                              else:
+                                  print(f"Empate, od vencedores sao {', '.join(vencedores)}com {pontuacao} pontos ")
+                                  
+
+
+                              
+
 
 
                     #------------------------------------------------------------------------------------ 

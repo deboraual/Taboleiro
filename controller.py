@@ -55,6 +55,49 @@ def tabuleiro_colorido (colunas, tabuleiro, cores_jogadores):
          print(f"{idx + 1:<3}" + " ".join(linha_formatada))
                  
 
+def verificar_movimentos(tabuleiro, linha, coluna, historico_jogadas, jogador_atual):
+    if not historico_jogadas[jogador_atual]:
+        return True 
+    
+    movimentos = {
+        (-1,0), #cima
+        (1,0), #baixo
+        (0,-1),#esquerda 
+        (0,1),#direita
+        (-1,-1),#up esq
+        (-1,1),#up drt
+        (1,-1),#inf esq
+        (1,1) #inf drt
+    }
+
+    for jogada_ant in historico_jogadas[jogador_atual]:
+        ultima_linha, ultima_coluna = jogada_ant
+        for mov in movimentos:
+            nova_linha = ultima_linha + mov[0]
+            nova_coluna = ultima_coluna + mov [1]
+            if nova_linha == linha and nova_coluna == coluna:
+                return True 
+    return False 
+
+def jogadas_validas (tabuleiro, historico_jogadas, jogador_atual, linhas, colunas):
+    for ln in range(linhas):
+        for cl in range(colunas):
+            if tabuleiro [ln][cl]=='X'and verificar_movimentos(tabuleiro, ln,cl, historico_jogadas, jogador_atual):
+                return True
+    return False
+
+def deterinar_vencedor(jogadores):
+    maior_pontuacao = -1
+    vencedor = []
+
+    for jogador in jogadores:
+        if jogador ["Pontuação"] > maior_pontuacao:
+            maior_pontuacao = jogador["Pontuação"]
+            vencedor = [jogador["Nome"]]
+        elif jogador["Pontuação"] == maior_pontuacao:
+            vencedor.append(jogador["Nome"])#empate
+
+    return vencedor, maior_pontuacao
 
 
 
