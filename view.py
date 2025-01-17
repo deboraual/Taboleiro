@@ -96,6 +96,15 @@ def main():
                           
                           ln = ln_input - 1
                           cl = cl_input - 1
+
+                          #Verifica se a jogada esta nas coordenadas que dão bonus 
+                          if (ln + 1, cl + 1) in coordenadas_bonus:
+                            for jogador in jogadores:
+                                if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
+                                    jogador["Pontuação"] += 2
+                                    print(f'Parabéns {jogadores_atuais[jogador_atual]["nome"]}! Recebeu 2 pontos extras!')
+                                    break
+	
                           
                           #verificar se a posição esta dentro dos limites do tabuleiro
                           if ln < 0 or ln >= linhas or cl < 0 or cl >= colunas:

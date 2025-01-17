@@ -86,6 +86,22 @@ def jogadas_validas (tabuleiro, historico_jogadas, jogador_atual, linhas, coluna
                 return True
     return False
 
+
+#-------- Função dicionar bonus - Verifica se a posição atual corresponde a uma posição de bônus-------
+coordenadas_bonus = [(5, 3), (18, 25), (22, 7), (9, 30), (15, 15), (3, 20), (27, 4), (11, 11), (6, 28), (29, 3)]
+
+
+def verificar_bonus (linha, coluna, jogadores):
+    if (linha + 1, coluna + 1) in coordenadas_bonus: #adiciona 1 porque o jogador usa indices baseados em 1
+        print (f"Parabéns! Jogador {jogadores['Nome']} ganhou 2 pontos ao jogo em uma posicao de bonus!")
+        jogadores ['Pontuação'] += 2
+
+        return True
+    
+    else: 
+        return False
+
+
 def deterinar_vencedor(jogadores):
     maior_pontuacao = -1
     vencedor = []
