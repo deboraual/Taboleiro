@@ -1,4 +1,5 @@
-from colorama import Back, Style
+from colorama import Style
+import json
 
 def verificar_jogador(matriz,nome):
     
@@ -37,6 +38,7 @@ def devolver_tabuleiro ( colunas, tabuleiro):
      for idx, linha in enumerate(tabuleiro):
          print(f"{idx + 1:<3}" + " ".join(linha))
 
+#Funçao para colorir onde os jogadores jogam 
 def tabuleiro_colorido (colunas, tabuleiro, cores_jogadores):
      
      colunas_numeros = "  " + "".join(f"{i + 1:>2}" for i in range(colunas))
@@ -54,11 +56,12 @@ def tabuleiro_colorido (colunas, tabuleiro, cores_jogadores):
                 linha_formatada.append(cell)
          print(f"{idx + 1:<3}" + " ".join(linha_formatada))
                  
-
+#funcao para verificar todos os movimentos possiveis de acordo com o historico de jogadas do jogador atual
 def verificar_movimentos(tabuleiro, linha, coluna, historico_jogadas, jogador_atual):
     if not historico_jogadas[jogador_atual]:
         return True 
     
+    #todos os movimentos possiveis denytro do jogo
     movimentos = {
         (-1,0), #cima
         (1,0), #baixo
@@ -79,12 +82,41 @@ def verificar_movimentos(tabuleiro, linha, coluna, historico_jogadas, jogador_at
                 return True 
     return False 
 
+
 def jogadas_validas (tabuleiro, historico_jogadas, jogador_atual, linhas, colunas):
     for ln in range(linhas):
         for cl in range(colunas):
             if tabuleiro [ln][cl]=='X'and verificar_movimentos(tabuleiro, ln,cl, historico_jogadas, jogador_atual):
                 return True
     return False
+
+def determinar_vencedor(jogadores):
+    maior_pontuacao = -1
+    vencedor = []
+
+    for jogador in jogadores:
+        if jogador ["Pontuação"] > maior_pontuacao:
+            maior_pontuacao = jogador["Pontuação"]
+            vencedor = [jogador["Nome"]]
+        elif jogador["Pontuação"] == maior_pontuacao:
+            vencedor.append(jogador["Nome"])#empate
+
+    return vencedor, maior_pontuacao
+
+
+#------Ficheiros-------
+
+def escrever_ficheiro_json(nome_ficheiro,d):
+    json_string = json.dumps(d)
+    json_file = open(nome_ficheiro, "w")
+    json_file.write(json_string)
+    json_file.close()
+
+
+def ler_ficheiro_json(nome_ficheiro):
+    with open(nome_ficheiro) as f:
+        data = json.load(f)
+    return data
 
 
 #-------- Função dicionar bonus - Verifica se a posição atual corresponde a uma posição de bônus-------
@@ -100,27 +132,3 @@ def verificar_bonus (linha, coluna, jogadores):
     
     else: 
         return False
-
-
-def deterinar_vencedor(jogadores):
-    maior_pontuacao = -1
-    vencedor = []
-
-    for jogador in jogadores:
-        if jogador ["Pontuação"] > maior_pontuacao:
-            maior_pontuacao = jogador["Pontuação"]
-            vencedor = [jogador["Nome"]]
-        elif jogador["Pontuação"] == maior_pontuacao:
-            vencedor.append(jogador["Nome"])#empate
-
-    return vencedor, maior_pontuacao
-
-
-
-
-
-
-
-
-
-#cores para os jogadores: azul, vermelho, amarelo e verde
