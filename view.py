@@ -35,13 +35,14 @@ def main():
                         print('O mínimo de jogadores são 2 e o máximo são 4.')
                         exit()
 
-                    jogadores_atuais = []
+                    jogadores_atuais = []# Lista para armazenar os jogadores registrados
+
                     cores_jogadores = [Back.BLUE, Back.RED, Back.YELLOW, Back.GREEN]  # Definir as cores que vão ser utilizadas
 
                     n = 0
-                    jogadores_atuais = []  # Lista para armazenar os jogadores registrados
 
                     while n < players:
+                        
                         nome = input("Qual o nome do jogador: ")
                         verificar_nome = verificar_jogador(jogadores, nome)
                         
@@ -51,27 +52,29 @@ def main():
                             jogadores_atuais.append({"nome": nome, "pecas": 21})  # Adiciona o jogador com 21 peças iniciais
                             n += 1
 
-                    # Perguntar o modo de jogo após registrar todos os jogadores
-                    if players == 4:
-                        modo = input("Qual o modo que deseja jogar ('solo/duo'): ").lower()
+                        # Perguntar o modo de jogo após registrar todos os jogadores
+                        if players == 4:
+                            modo = int(input("Qual o modo que deseja jogar \n\t1-> solo\n\t2->duo  "))
 
-                        if modo == "duo":
-                            print("Criando as equipas......")
-                            equipa_1 = [jogadores_atuais[0], jogadores_atuais[1]]  # Corrigido a estrutura
-                            equipa_2 = [jogadores_atuais[2], jogadores_atuais[3]]
+                            if modo == 2:
+                             print("Criando as equipas......")
+                            
+                             equipa_1 = [jogadores[0], jogadores[2]]  # Corrigido a estrutura
+                             equipa_2 = [jogadores[1], jogadores[3]]
 
-                            print("Modo de jogo: Duo")
-                            print(f"Equipa 1: {equipa_1}")
-                            print(f"Equipa 2: {equipa_2}")
-
-                        elif modo == "solo":
-                            # Todos jogam individualmente
-                            print("Modo de jogo: Solo")
-                            for i, jogador in enumerate(jogadores_atuais):
+                             print("Modo de jogo: Duo")
+                             print(f"Equipa 1: {equipa_1}")
+                             print(f"Equipa 2: {equipa_2}")
+                            elif modo == 1:
+                             # Todos jogam individualmente
+                             print("Modo de jogo: Solo")
+                             for i, jogador in enumerate(jogadores_atuais):
                                 print(f"Jogador {i + 1}: {jogador}")
-
+                            else:
+                             print('invalido!!')
+                             break                          
                         else:
-                            print("Modo inválido. Escolha entre 'solo' ou 'duo'.")
+                         modo = 1
 
                     if n == players:
                         print('\tAVISO: O tabuleiro tem de ter entre 5-30 linhas e 5-30 colunas\n')
@@ -101,10 +104,10 @@ def main():
                         historico_jogadas = [[] for _ in range(players)]  # Lista de listas para armazenar todas as jogadas de cada jogador
                         historico_jogadas[0].append((0, 0))
                         tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
-                        jogador_atual = 0
 
+                        jogador_atual = 0
                         jogadores_atuais[jogador_atual]["pecas"] -= 1
-                        
+  
                         #-----------Jogar----------
                         total_jogadas = linhas * colunas - 1
                         jogadas_realizadas = 0
@@ -114,24 +117,51 @@ def main():
 
                             # Verificar se ainda tem jogadas válidas
                             if not jogadas_validas(tabuleiro, historico_jogadas, jogador_atual, linhas, colunas):
-                                print(f"Jogador {jogadores_atuais[jogador_atual]['nome']} não pode mais jogar e será eliminado.")
-                                jj = jogadores_atuais[jogador_atual]
-                                jogadores_atuais.remove(jj)#remove o jogador atual dos jogadores 
+                            
+                                if modo == 1:
+                                    print(f"Jogador {jogadores_atuais[jogador_atual]['nome']} não pode mais jogar e está eliminado.")
+                                    jj = jogadores_atuais[jogador_atual]
+                                    jogadores_atuais.remove(jj)#remove o jogador atual dos jogadores                        
 
-                                if players == 2:
-                                    #O jogador que ganhou ira ganhar mais 5 pontos por ter ganho 
-                                    for jogador in jogadores:
-                                     if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
-                                      jogador["Pontuação"] += 5
-                                      break
+                                    ajogar = len(jogadores_atuais)
+                                    print(f"A jogar :{ajogar}")
+                                    if ajogar == 1:     
+                                     #O jogador que ganhou ira ganhar mais 5 pontos por ter ganho 
+                                     for jogador in jogadores:
+                                        if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
+                                         jogador["Pontuação"] += 5
+                                        break
                                     
-                                    vencedores, pontuacao = determinar_vencedor(jogadores)
-                                    print(f"O jogador {jogadores_atuais[jogador_atual]['nome']} ganhou, com {pontuacao} pontos")
-                                    break
+                                     vencedores, pontuacao = determinar_vencedor(jogadores)
+                                     print(f"O jogador {jogadores_atuais[jogador_atual]['nome']} ganhou, com {pontuacao} pontos")
+                                     break
+      
+                                    else:
+                                        # Passar para o próximo jogador
+                                        jogador_atual = (jogador_atual)
+                                        continue  # passar para o próximo jogador, sem acabar o jogo
+                                    
+                                elif modo == 2:
+                                    print(f"Jogador {jogadores_atuais[jogador_atual]['nome']} não pode mais jogar e está eliminado.")
+                                    jj = jogadores_atuais[jogador_atual]
+                                    jogadores_atuais.remove(jj)  # Remove o jogador atual da lista
 
-                                # Passar para o próximo jogador
-                                jogador_atual = (jogador_atual + 1) % players
-                                continue  # passar para o próximo jogador, sem acabar o jogo
+                                    # Recalcular as pontuações das equipas
+                                    pt_1 = sum(jogador["pecas"] for jogador in equipa_1 if jogador in jogadores_atuais)
+                                    pt_2 = sum(jogador["pecas"] for jogador in equipa_2 if jogador in jogadores_atuais)
+
+                                    if len(jogadores_atuais) == 2:  # Restam apenas 2 jogadores (um em cada equipa)
+                                        equipa_vencedora = determinar_vencedor_duo(equipa_1, equipa_2, pt_1, pt_2)
+
+                                        if equipa_vencedora == equipa_1:
+                                            print(f"A equipa vencedora é {equipa_1} com {pt_1} pontos.")
+                                        elif equipa_vencedora == equipa_2:
+                                            print(f"A equipa vencedora é {equipa_2} com {pt_2} pontos.")
+                                        else:
+                                            print(f"As equipas empataram com {pt_1} pontos cada.")
+                                        break  # Termina o jogo
+                            else:
+                                continue 
 
                             print(f'É a vez do jogador {jogadores_atuais[jogador_atual]["nome"]}, Peças: {jogadores_atuais[jogador_atual]["pecas"]}')
                             ln_input = int(input('Digite o número da linha:\n-->'))
@@ -140,13 +170,6 @@ def main():
                             ln = ln_input - 1
                             cl = cl_input - 1
 
-                            # Verifica se a jogada está nas coordenadas que dão bônus
-                            if (ln + 1, cl + 1) in coordenadas_bonus:
-                                for jogador in jogadores:
-                                    if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
-                                        jogador["Pontuação"] += 2
-                                        print(f'Parabéns {jogadores_atuais[jogador_atual]["nome"]}! Recebeu 2 pontos extras!')
-                                        break
 
                             # Verifica se a posição está dentro dos limites do tabuleiro
                             if ln < 0 or ln >= linhas or cl < 0 or cl >= colunas:
@@ -167,6 +190,14 @@ def main():
                             tabuleiro[ln][cl] = str(jogador_atual + 1)
                             print('Tabuleiro atualizado: ')
                             tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
+
+                            # Verifica se a jogada está nas coordenadas que dão bônus
+                            if (ln + 1, cl + 1) in coordenadas_bonus:
+                                for jogador in jogadores:
+                                    if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
+                                        jogador["Pontuação"] += 2
+                                        print(f'Parabéns {jogadores_atuais[jogador_atual]["nome"]}! Recebeu 2 pontos extras!')
+                                        break
 
                             # Pontuação
                             for jogador in jogadores:

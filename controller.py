@@ -103,6 +103,22 @@ def determinar_vencedor(jogadores):
 
     return vencedor, maior_pontuacao
 
+def determinar_vencedor_duo(equipa_1, equipa_2, pt_1, pt_2):
+    # Calcular a pontuação total de cada equipe
+    for j in equipa_1:
+        pt_1 += j['Pontuação']  # Somar a pontuação de cada jogador de equipa_1
+
+    for jj in equipa_2:
+        pt_2 += jj['Pontuação']  # Somar a pontuação de cada jogador de equipa_2
+
+    # Determinar o vencedor
+    if pt_1 > pt_2:
+        return equipa_1, pt_1
+    elif pt_2 > pt_1:
+        return equipa_2, pt_2
+    else:
+        return pt_1, "Empate"
+ 
 
 #------Ficheiros-------
 
