@@ -39,13 +39,11 @@ def main():
                     cores_jogadores = [Back.BLUE, Back.RED, Back.YELLOW, Back.GREEN]  # Definir as cores que vão ser utilizadas
 
                     n = 0
-                    jogadores_atuais = []  # Lista para armazenar os jogadores registrados
 
                     while n < players:
                         nome = input("Qual o nome do jogador: ")
-                        verificar_nome = verificar_jogador(jogadores, nome)
                         
-                        if verificar_nome == False:
+                        if not verificar_jogador(jogadores, nome):
                             print("O utilizador não existe!") 
                         else:
                             jogadores_atuais.append({"nome": nome, "pecas": 21})  # Adiciona o jogador com 21 peças iniciais
@@ -53,18 +51,21 @@ def main():
 
                     # Perguntar o modo de jogo após registrar todos os jogadores
                     if players == 4:
-                        modo = input("Qual o modo que deseja jogar ('solo/duo'): ").lower()
+                        modo = int(input("Qual o modo que deseja jogar \n\t1-> solo \n\t2-> duo "))
 
-                        if modo == "duo":
+                        while modo != 1 and modo != 2:
+                            print("Valor inválido! Por favor, insira um valor válido...")
+                            modo = int(input("Qual o modo que deseja jogar \n\t1-> solo \n\t2-> duo ")) 
+                        if modo == 2:
                             print("Criando as equipas......")
-                            equipa_1 = [jogadores_atuais[0], jogadores_atuais[1]]  # Corrigido a estrutura
-                            equipa_2 = [jogadores_atuais[2], jogadores_atuais[3]]
+                            equipa_1 = [jogadores_atuais[0], jogadores_atuais[2]]  # Corrigido a estrutura
+                            equipa_2 = [jogadores_atuais[1], jogadores_atuais[3]]
 
                             print("Modo de jogo: Duo")
                             print(f"Equipa 1: {equipa_1}")
                             print(f"Equipa 2: {equipa_2}")
 
-                        elif modo == "solo":
+                        elif modo == 1:
                             # Todos jogam individualmente
                             print("Modo de jogo: Solo")
                             for i, jogador in enumerate(jogadores_atuais):
@@ -72,6 +73,7 @@ def main():
 
                         else:
                             print("Modo inválido. Escolha entre 'solo' ou 'duo'.")
+
 
                     if n == players:
                         print('\tAVISO: O tabuleiro tem de ter entre 5-30 linhas e 5-30 colunas\n')
@@ -90,7 +92,7 @@ def main():
                         devolver_tabuleiro(colunas, tabuleiro)
                         
                         #-----------Primeira jogada (1,1)----------
-                        print(f'A primeira jogada tem de ser na posição (1,1) que calha a vez do/a jogador/a {jogadores_atuais[0]}')
+                        print(f'A primeira jogada tem de ser na posição (1,1) que calha na vez do/a jogador/a {jogadores_atuais[0]}')
                         tabuleiro[0][0] = '1'
 
                         for jogador in jogadores:
@@ -121,17 +123,15 @@ def main():
                                 if players == 2:
                                     #O jogador que ganhou ira ganhar mais 5 pontos por ter ganho 
                                     for jogador in jogadores:
-                                     if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
-                                      jogador["Pontuação"] += 5
-                                      break
+                                        if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
+                                            jogador["Pontuação"] += 5
+                                        break
                                     
                                     vencedores, pontuacao = determinar_vencedor(jogadores)
                                     print(f"O jogador {jogadores_atuais[jogador_atual]['nome']} ganhou, com {pontuacao} pontos")
                                     break
 
-                                # Passar para o próximo jogador
-                                jogador_atual = (jogador_atual + 1) % players
-                                continue  # passar para o próximo jogador, sem acabar o jogo
+                               
 
                             print(f'É a vez do jogador {jogadores_atuais[jogador_atual]["nome"]}, Peças: {jogadores_atuais[jogador_atual]["pecas"]}')
                             ln_input = int(input('Digite o número da linha:\n-->'))
@@ -140,13 +140,6 @@ def main():
                             ln = ln_input - 1
                             cl = cl_input - 1
 
-                            # Verifica se a jogada está nas coordenadas que dão bônus
-                            if (ln + 1, cl + 1) in coordenadas_bonus:
-                                for jogador in jogadores:
-                                    if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
-                                        jogador["Pontuação"] += 2
-                                        print(f'Parabéns {jogadores_atuais[jogador_atual]["nome"]}! Recebeu 2 pontos extras!')
-                                        break
 
                             # Verifica se a posição está dentro dos limites do tabuleiro
                             if ln < 0 or ln >= linhas or cl < 0 or cl >= colunas:
@@ -162,6 +155,9 @@ def main():
                             if not verificar_movimentos(tabuleiro, ln, cl, historico_jogadas, jogador_atual):
                                 print('Posição inválida, não adjacente a nenhuma jogada anterior')
                                 continue
+
+
+
 
                             # Atualiza o tabuleiro com a jogada atual
                             tabuleiro[ln][cl] = str(jogador_atual + 1)

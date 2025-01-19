@@ -30,7 +30,7 @@ def criar_tabuleiro_listas(linhas, colunas):
     return tabuleiro
 
 #------Função para devolver o tabuleiro com a linha e coluna do utilizador 
-def devolver_tabuleiro ( colunas, tabuleiro):
+def devolver_tabuleiro (colunas, tabuleiro):
 
      colunas_numeros ="  " + "".join(f"{i+1:>2}" for i in range(colunas))
      print(colunas_numeros)
@@ -60,7 +60,6 @@ def tabuleiro_colorido (colunas, tabuleiro, cores_jogadores):
 def verificar_movimentos(tabuleiro, linha, coluna, historico_jogadas, jogador_atual):
     if not historico_jogadas[jogador_atual]:
         return True 
-    
     #todos os movimentos possiveis denytro do jogo
     movimentos = {
         (-1,0), #cima
@@ -147,4 +146,4 @@ def verificar_bonus (linha, coluna, jogadores):
         return True
     
     else: 
-        return False
+        return False    
