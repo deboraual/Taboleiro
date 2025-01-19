@@ -165,7 +165,13 @@ def main():
                                 tabuleiro[ln][cl] = str(jogador_atual + 1)
                                 print('Tabuleiro atualizado: ')
                                 tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
-
+                                
+                                if (ln + 1, cl + 1) in coordenadas_bonus:
+                                    for jogador in jogadores:
+                                        if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
+                                            jogador["Pontuação"] += 2
+                                            print(f'Parabéns {jogadores_atuais[jogador_atual]["nome"]}! Recebeu 2 pontos extras!')
+                                            break
                                 # Pontuação
                                 for jogador in jogadores:
                                     if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
