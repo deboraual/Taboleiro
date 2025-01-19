@@ -1,5 +1,6 @@
 from controller import *
 from colorama import  Back
+import os
 
 def main():
     jogadores = []
@@ -11,10 +12,12 @@ def main():
         match operacao:
             case 1:
                   #---------Registar Jogador-------------------
+                    os.system('cls')
                     quantidade_registar = int(input("Quantos jogadores deseja registar: "))
 
                     x = 0
                     while x < quantidade_registar:
+                        
                         nome = input('Nome do jogador:\n-->')
                         
                         if not nome:  # Verifica se o nome está vazio
@@ -29,7 +32,7 @@ def main():
                             x += 1  # Corrigido: Incrementa x corretamente
             case 2:
                   #--------Verificar o número de jogadores antes de jogar--------
-                  
+                    os.system('cls')
                     players = int(input('Quantos jogadores vão jogar, escolha entre 2 a 4\n-->'))
                     if players < 2 or players > 4:
                         print('O mínimo de jogadores são 2 e o máximo são 4.')
@@ -51,12 +54,14 @@ def main():
 
                     # Perguntar o modo de jogo após registrar todos os jogadores
                     if players == 4:
+                        os.system('cls')
                         modo = int(input("Qual o modo que deseja jogar \n\t1-> solo \n\t2-> duo "))
 
                         while modo != 1 and modo != 2:
                             print("Valor inválido! Por favor, insira um valor válido...")
                             modo = int(input("Qual o modo que deseja jogar \n\t1-> solo \n\t2-> duo ")) 
                         if modo == 2:
+                            os.system('cls')
                             print("Criando as equipas......")
                             equipa_1 = [jogadores_atuais[0], jogadores_atuais[2]]  # Corrigido a estrutura
                             equipa_2 = [jogadores_atuais[1], jogadores_atuais[3]]
@@ -86,7 +91,7 @@ def main():
                             exit()
 
                         tabuleiro = criar_tabuleiro_listas(linhas, colunas)
-                        
+                        os.system('cls')
                         #--------Tabuleiro inicial--------
                         print('Tabuleiro inicial:')
                         devolver_tabuleiro(colunas, tabuleiro)
@@ -119,85 +124,86 @@ def main():
                                 print(f"Jogador {jogadores_atuais[jogador_atual]['nome']} não pode mais jogar e será eliminado.")
                                 jj = jogadores_atuais[jogador_atual]
                                 jogadores_atuais.remove(jj)#remove o jogador atual dos jogadores 
-
-                                if players == 2:
-                                    #O jogador que ganhou ira ganhar mais 5 pontos por ter ganho 
-                                    for jogador in jogadores:
-                                        if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
-                                            jogador["Pontuação"] += 5
-                                        break
+                                if len(jogadores_atuais) == 1:
+                                    vencedor = jogadores_atuais[0]
+                                    print("O vencedor{vencedor['nome']}venceu o jogo!")
+                                    break
+                                if jogador_atual >= len(jogadores_atuais):
+                                    jogador_atual = 0
                                     
-                                    vencedores, pontuacao = determinar_vencedor(jogadores)
-                                    print(f"O jogador {jogadores_atuais[jogador_atual]['nome']} ganhou, com {pontuacao} pontos")
-                                    break
+                                
 
-                               
+                            if jogador_atual < len(jogadores_atuais):
+                                print(f'É a vez do jogador {jogadores_atuais[jogador_atual]["nome"]}, Peças: {jogadores_atuais[jogador_atual]["pecas"]}')
+                                ln_input = int(input('Digite o número da linha:\n-->'))
+                                cl_input = int(input('Digite o número da coluna:\n-->'))
 
-                            print(f'É a vez do jogador {jogadores_atuais[jogador_atual]["nome"]}, Peças: {jogadores_atuais[jogador_atual]["pecas"]}')
-                            ln_input = int(input('Digite o número da linha:\n-->'))
-                            cl_input = int(input('Digite o número da coluna:\n-->'))
-
-                            ln = ln_input - 1
-                            cl = cl_input - 1
+                                ln = ln_input - 1
+                                cl = cl_input - 1
 
 
-                            # Verifica se a posição está dentro dos limites do tabuleiro
-                            if ln < 0 or ln >= linhas or cl < 0 or cl >= colunas:
-                                print('Posição fora dos limites do tabuleiro')
-                                continue 
+                                # Verifica se a posição está dentro dos limites do tabuleiro
+                                if ln < 0 or ln >= linhas or cl < 0 or cl >= colunas:
+                                    print('Posição fora dos limites do tabuleiro')
+                                    continue 
 
-                            # Verifica se a posição está ocupada
-                            if tabuleiro[ln][cl] != 'X':
-                                print('Posição ocupada')
-                                continue
+                                # Verifica se a posição está ocupada
+                                if tabuleiro[ln][cl] != 'X':
+                                    print('Posição ocupada')
+                                    continue
 
-                            # Verifica a adjacência das jogadas anteriores
-                            if not verificar_movimentos(tabuleiro, ln, cl, historico_jogadas, jogador_atual):
-                                print('Posição inválida, não adjacente a nenhuma jogada anterior')
-                                continue
-
-
+                                # Verifica a adjacência das jogadas anteriores
+                                if not verificar_movimentos(tabuleiro, ln, cl, historico_jogadas, jogador_atual):
+                                    print('Posição inválida, não adjacente a nenhuma jogada anterior')
+                                    continue
 
 
-                            # Atualiza o tabuleiro com a jogada atual
-                            tabuleiro[ln][cl] = str(jogador_atual + 1)
-                            print('Tabuleiro atualizado: ')
-                            tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
+                                # Atualiza o tabuleiro com a jogada atual
+                                tabuleiro[ln][cl] = str(jogador_atual + 1)
+                                print('Tabuleiro atualizado: ')
+                                tabuleiro_colorido(colunas, tabuleiro, cores_jogadores)
 
-                            # Pontuação
-                            for jogador in jogadores:
-                                if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
-                                    jogador["Pontuação"] += 1
-                                    break
+                                # Pontuação
+                                for jogador in jogadores:
+                                    if jogador["Nome"] == jogadores_atuais[jogador_atual]["nome"]:
+                                        jogador["Pontuação"] += 1
+                                        break
 
-                            # Adiciona a jogada ao histórico do jogador
-                            historico_jogadas[jogador_atual].append((ln, cl))
+                                # Adiciona a jogada ao histórico do jogador
+                                historico_jogadas[jogador_atual].append((ln, cl))   
 
-                            # Atualiza as peças do jogador
-                            jogadores_atuais[jogador_atual]["pecas"] -= 1
+                                # Atualiza as peças do jogador
+                                jogadores_atuais[jogador_atual]["pecas"] -= 1
 
-                            jogadas_realizadas += 1
+                                jogadas_realizadas += 1
 
-                            # Passa para o próximo jogador
-                            jogador_atual = (jogador_atual + 1) % players
+                                # Passa para o próximo jogador
+                                jogador_atual = (jogador_atual + 1) % len(jogadores_atuais)if len(jogadores_atuais) > 0 else 0
 
-                            # Verifica se o jogador atual ficou sem peças
-                            if jogadores_atuais[jogador_atual]["pecas"] <= 0:
-                                print(f"O jogador {jogadores_atuais[jogador_atual]['nome']} ficou sem peças.")
+                                # Verifica se o jogador atual ficou sem peças
+                                if jogadores_atuais[jogador_atual]["pecas"] <= 0:
+                                    print(f"O jogador {jogadores_atuais[jogador_atual]['nome']} ficou sem peças.")
                             
                             # Verifica se ainda existem jogadores com peças
                             jogadores_restantes = [j for j in jogadores_atuais if j["pecas"] > 0]
                             
                             # Se não houver jogadores restantes, o jogo acaba
-                            if len(jogadores_restantes) <= 1:
+                            if len(jogadores_restantes) == 1:
+                                print(f"O jogador {jogadores_restantes[0]['nome']} é o único restante e venceu o jogo!")
+                                for jogador in jogadores:
+                                    if jogador["Nome"] == jogadores_restantes[0]["nome"]:
+                                        jogador["Pontuação"] += 5
+                                        break
+                                break  # Encerra o jogo
+                            
+                            if len(jogadores_restantes) == 0:
                                 print('Nenhum jogador pode jogar mais, o jogo acabou.')
-                                # Chama a função para determinar o vencedor
                                 vencedores, pontuacao = determinar_vencedor(jogadores)
                                 if len(vencedores) == 1:
                                     print(f"O vencedor é {vencedores[0]} com {pontuacao} pontos!")
                                 else:
-                                    print(f"Empate, os vencedores são {', '.join(vencedores)} com {pontuacao} pontos.")
-                                break  # Encerra o jogo
+                                    print(f"Empate, os vencedores sao {', '.join(vencedores)} com {pontuacao} pontos. ")
+                                break
                                                         
 
                     #------------------------------------------------------------------------------------ 
