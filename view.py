@@ -118,20 +118,23 @@ def main():
                         jogador_atual = 1
 
                         while jogadas_realizadas < total_jogadas:
-
+                            
                             # Verificar se ainda tem jogadas válidas
                             if not jogadas_validas(tabuleiro, historico_jogadas, jogador_atual, linhas, colunas):
-                                print(f"Jogador {jogadores_atuais[jogador_atual]['nome']} não pode mais jogar e será eliminado.")
-                                jj = jogadores_atuais[jogador_atual]
-                                jogadores_atuais.remove(jj)#remove o jogador atual dos jogadores 
+                                print(f"Jogador {jogadores_atuais[jogador_atual]['nome']} não pode mais jogar e está eliminado.")
+                                
+                                eliminado = jogadores_atuais[jogador_atual]
+                                jogadores_atuais.remove(eliminado)#remove o jogador atual dos jogadores 
+                                
                                 if len(jogadores_atuais) == 1:
                                     vencedor = jogadores_atuais[0]
-                                    print("O vencedor{vencedor['nome']}venceu o jogo!")
+                                    print(f"O {vencedor['nome']} venceu o jogo!")
                                     break
+                                
                                 if jogador_atual >= len(jogadores_atuais):
                                     jogador_atual = 0
                                     
-                                
+            
 
                             if jogador_atual < len(jogadores_atuais):
                                 print(f'É a vez do jogador {jogadores_atuais[jogador_atual]["nome"]}, Peças: {jogadores_atuais[jogador_atual]["pecas"]}')
@@ -186,6 +189,17 @@ def main():
                             
                             # Verifica se ainda existem jogadores com peças
                             jogadores_restantes = [j for j in jogadores_atuais if j["pecas"] > 0]
+                            
+                            #veridficar se o tabuleiro esta totalmente preenchido:
+                            ocupadas =  sum (1 for linha in tabuleiro for cell in linha if cell != "X")
+                            if ocupadas == linhas * colunas:
+                                print('O tabuleiro está totalmente preenchido!')
+                                vencedores, pontuacao = determinar_vencedor(jogadores)
+                                if len(vencedores)==1:
+                                    print(f"O vencedor é {vencedores[0]} com {pontuacao}pontos!")
+                                else:
+                                    print(f"Empate, os vencedores são {', '.join(vencedores)} com {pontuacao}pontos.")
+                                break
                             
                             # Se não houver jogadores restantes, o jogo acaba
                             if len(jogadores_restantes) == 1:
